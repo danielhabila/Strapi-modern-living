@@ -1,0 +1,51 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+          cache-dependency-path: |
+            client/package-lock.json
+            server/package-lock.json
+
+      # - name: Create env file
+      #   run: |
+      #     cd server
+      #     echo MONGODB_URL=${{ secrets.MONGODB_URL }} >> .env
+      #     echo MAILCHIMP_APIKEY=${{ secrets.MAILCHIMP_APIKEY }} >> .env
+      #     echo MY_SESSION_KEY=${{ secrets.MY_SESSION_KEY }} >> .env
+      #     echo STRIPE_PUBLISHABLE_KEY=${{ secrets.STRIPE_PUBLISHABLE_KEY }} >> .env
+      #     echo STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }} >> .env
+      #     echo WEBHOOK_ENDPOINT_SECRET=${{ secrets.WEBHOOK_ENDPOINT_SECRET }} >> .env
+
+      - name: Install client dependencies
+        run: |
+          cd client
+          npm install
+          npm run build
+
+      - name: Install server dependencies
+        run: |
+          cd server
+          npm install
+          NODE_ENV=production npm run build
+
+      # - name: Restart pm2
+      #   run: |
+      #     cd server
+      #     pm2 restart server.js
