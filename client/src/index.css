@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .no-spinner {
+    -moz-appearance: textfield;
+  }
+}
+
+#container {
+  min-height: 100vh;
+  flex-direction: column;
+  display: flex;
+}
+
+#main-content {
+  flex: 1;
+}
+
+
+
+
+/* body {
+  
+  background-color: black;
+  color:white
+} */
+
+/* 
+ @media (min-width: 768px) {
+  body {
+        margin-left: 2.5rem ;
+        margin-right: 2.5rem ;
+
+        }
+    
+    } 
+
+@media (max-width: 768px) {
+  body {
+
+    margin-left: 0.7rem ;
+    margin-right: 0.7rem ; 
+
+        }    
+    }  */
